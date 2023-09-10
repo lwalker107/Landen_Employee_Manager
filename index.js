@@ -27,25 +27,38 @@ function init() {
             { choice: 'Add an employee role', value: 'ADD_ROLE' },
             { choice: 'Add an employee', value: 'ADD_EMPLOYEE' },
             { choice: 'Update an employee role', value: 'UPDATE_EMPLOYEE' },
+            { choice: 'QUIT', value: 'quit'},
         },
     ]).then((inquirerResponses) => {
-        let database;
-        if (inquirerResponses.value === 'ALL_DEPARTMENTS') {
-            database = new Circle(inquirerResponses.shapeColor, inquirerResponses.brandInitials, inquirerResponses.textColor)
+        console.log(inquirerResponses.value);
+        switch (inquirerResponses.value) {
+            case "ALL_DEPARTMENTS":
+                viewDepartments();
+                break;
+
+            case "ALL_ROLES":
+                viewRoles();
+                break;
+
+            case "ALL_EMPLOYEES":
+                viewEmployees();
+                break;
+
+            case "ADD_DEPARTMENT":
+                addDepartment();
+                break;
+
+            case "ADD_ROLE":
+                addRole();
+                break;
+
+            case "ADD_EMPLOYEE":
+                addEmployee();
+                break;
+
+            case "UPDATED_EMPLOYEE":
+                updateEmployee();
+                break;
         }
-    
-        if (inquirerResponses.database === 'triangle') {
-            database = new Triangle(inquirerResponses.shapeColor, inquirerResponses.brandInitials, inquirerResponses.textColor)
-        }
-    
-        if (inquirerResponses.database === 'square') {
-            database = new Square(inquirerResponses.shapeColor, inquirerResponses.brandInitials, inquirerResponses.textColor)
-        }
-    
-        shape.setShape(shape.render()) 
-        let SVG = shape.renderSVG()
-        
-        fs.writeFileSync("./logo.svg", SVG)
-        console.log("Generated Logo.svg")
     })
 }
