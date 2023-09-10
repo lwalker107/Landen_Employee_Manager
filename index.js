@@ -3,15 +3,21 @@ const path = require('path');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-db = mysql.createConnection(
+let db = mysql.createConnection(
     {
     host: 'localhost',
     user:'root',
-    password: '',
-    datqabase: 'employee_db',
+    password: 'layLow99',
+    database: 'employee_db',
     },
     console.log('connected to employee db')
 );
+
+// Connect to mysql server and sql database
+db.connect(function (err) {
+    if (err) throw err;
+    init();
+})
 
 function init() {
     inquirer.prompt([
@@ -27,12 +33,12 @@ function init() {
             { choice: 'Add an employee role', value: 'ADD_ROLE' },
             { choice: 'Add an employee', value: 'ADD_EMPLOYEE' },
             { choice: 'Update an employee role', value: 'UPDATE_EMPLOYEE' },
-            { choice: 'QUIT', value: 'quit'},
+            { choice: 'QUIT', value: 'quit'},]
         },
     ]).then((inquirerResponses) => {
         console.log(inquirerResponses.value);
         switch (inquirerResponses.value) {
-            case "ALL_DEPARTMENTS":
+            case 'ALL_DEPARTMENTS':
                 viewDepartments();
                 break;
 
@@ -59,6 +65,17 @@ function init() {
             case "UPDATED_EMPLOYEE":
                 updateEmployee();
                 break;
+
+            case "quit":
+                db.end();
+                break;
         }
+    });
+}
+
+function viewDepartments() {
+    db.query("SELECT * FROM department", function(err, data) {
+        console.table(data);
+        init();
     })
 }
