@@ -101,7 +101,7 @@ function addDepartment() {
            name: "department",
            message: "What is the name of the department you'd like to add?" 
         },]).then((res) => {
-            db.query('INSERT INTO department (name) VALUES (?)', [res.department], function(err, data) {
+            db.query('INSERT INTO department (department_name) VALUES (?)', [res.department], function(err, data) {
                 if (err) throw err;
                 console.table("Successfully Inserted");
                 init();
@@ -161,4 +161,25 @@ function addEmployee() {
             init();
         })
     })
+}
+
+function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Which employee would you like to update? (First name only)"
+
+        }, {
+            type: "number",
+            name: "name",
+            message: "enter the new role ID:"
+        }
+    ]).then((res) => {
+        db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.role_id, res.name], function (err, data) {
+            console.table(data);
+        })
+        init();
+    })
+
 }
