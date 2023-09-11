@@ -62,7 +62,7 @@ function init() {
                 addEmployee();
                 break;
 
-            case "UPDATED_EMPLOYEE":
+            case "UPDATE_EMPLOYEE":
                 updateEmployee();
                 break;
 
@@ -172,11 +172,11 @@ function updateEmployee() {
 
         }, {
             type: "number",
-            name: "name",
-            message: "enter the new role ID:"
+            name: "first_name",
+            message: "Enter the new role ID:"
         }
     ]).then((res) => {
-        db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.role_id, res.name], function (err, data) {
+        db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.role_id, res.first_name], function (err, data) {
             console.table(data);
         })
         init();
