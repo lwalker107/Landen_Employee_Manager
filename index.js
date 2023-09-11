@@ -26,44 +26,59 @@ function init() {
             name: 'choices',
             message: 'What would you like to do?',
             choices: [
-            { choices: 'View all departments', value: 'ALL_DEPARTMENTS' },
-            { choices: 'View all roles', value: 'ALL_ROLES' },
-            { choices: 'View all employees', value: 'ALL_EMPLOYEES' },
-            { choices: 'Add a department', value: 'ADD_DEPARTMENT' },
-            { choices: 'Add an employee role', value: 'ADD_ROLE' },
-            { choices: 'Add an employee', value: 'ADD_EMPLOYEE' },
-            { choices: 'Update an employee role', value: 'UPDATE_EMPLOYEE' },
+            { choices: 'View all departments', value: 'View all departments' },
+            { choices: 'View all roles', value: 'View all roles' },
+            { choices: 'View all employees', value: 'View all employees' },
+            { choices: 'Add a department', value: 'Add a department' },
+            { choices: 'Add an employee role', value: 'Add an employee role' },
+            { choices: 'Add an employee', value: 'Add an employee' },
+            { choices: 'Update an employee role', value: 'Update an employee role' },
+            { choices: 'Delete a department', value: 'Delete a department'},
+            { choices: 'Delete an employee', value: 'Delete an employee'},
+            { choices: 'Delete a role', value: 'Delete a role'},
             { choices: 'QUIT', value: 'quit'},]
         },
     ]).then((inquirerResponses) => {
         console.log(inquirerResponses.choices);
         switch (inquirerResponses.choices) {
-            case 'ALL_DEPARTMENTS':
+            case 'View all departments':
                 viewDepartments();
                 break;
 
-            case "ALL_ROLES":
+            case "View all roles":
                 viewRoles();
                 break;
 
-            case "ALL_EMPLOYEES":
+            case "View all employees":
                 viewEmployees();
                 break;
 
-            case "ADD_DEPARTMENT":
+            case "Add a department":
                 addDepartment();
                 break;
 
-            case "ADD_ROLE":
+            case "Add an employee role":
                 addRole();
                 break;
 
-            case "ADD_EMPLOYEE":
+            case "Add an employee":
                 addEmployee();
                 break;
 
-            case "UPDATE_EMPLOYEE":
+            case "Update an employee role":
                 updateEmployee();
+                break;
+
+            case "Delete a department":
+                deleteDepartment();
+                break;
+
+            case "Delete an employee":
+                deleteEmployee();
+                break;
+
+            case "Delete a role":
+                deleteRole();
                 break;
 
             case "quit":
@@ -176,11 +191,55 @@ function updateEmployee() {
             message: "Enter the new role ID:"
         }
     ]).then((res) => {
-        console.log(res);
         db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.roleId, res.firstName], function (err, data) {
             console.table(data);
         })
         init();
     })
 
+}
+
+function deleteDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "department",
+            message: "What department would you like to delete?"
+        },
+    ]).then((res) => {
+        db.query("DELETE FROM department WHERE department_name = ?", [res.department], function (err,data) {
+            console.log('Department successfully deleted');
+        })
+        init();
+    })
+}
+
+function deleteEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "Which employee would you like to delete from the database? (First name only)"
+        },
+    ]).then((res) => {
+        db.query("DELETE FROM employee WHERE first_name = ?", [res.firstName], function (err,data) {
+            console.log('Employee successfully terminated');
+        })
+        init();
+    })
+}
+
+function deleteRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "role",
+            message: "What role would you like to delete?"
+        },
+    ]).then((res) => {
+        db.query("DELETE FROM role WHERE title = ?", [res.role], function (err,data) {
+            console.log('Role successfully deleted');
+        })
+        init();
+    })
 }
