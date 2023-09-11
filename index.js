@@ -167,16 +167,17 @@ function updateEmployee() {
     inquirer.prompt([
         {
             type: "input",
-            name: "name",
+            name: "firstName",
             message: "Which employee would you like to update? (First name only)"
 
         }, {
             type: "number",
-            name: "first_name",
+            name: "roleId",
             message: "Enter the new role ID:"
         }
     ]).then((res) => {
-        db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.role_id, res.first_name], function (err, data) {
+        console.log(res);
+        db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.roleId, res.firstName], function (err, data) {
             console.table(data);
         })
         init();
