@@ -63,7 +63,7 @@ npm run tests
 
 ## Screenshot
 
-![screenshot](Assets\employee_management.PNG)
+![screenshot](Assets/employee_management.PNG)
 
 ## Link 
 
